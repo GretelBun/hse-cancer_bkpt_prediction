@@ -1,0 +1,28 @@
+#!/bin/bash
+
+# Проверка наличия аргумента (имени файла)
+if [ -z "$1" ]
+then
+    echo "Please provide a filename as an argument."
+    exit 1
+fi
+
+# Имя исходного файла
+input_file="$1"
+
+# Проверка наличия файла
+if [ ! -f "$input_file" ]
+then
+    echo "File $input_file does not exist."
+    exit 1
+fi
+
+# Имя выходного файла
+output_file="prepared_$1"
+
+# Применение awk и sort к файлу
+awk -F'\t' 'BEGIN{OFS=FS}{
+    match($4, /Name=([^%]*)%/, arr);
+    print $0, arr[1] 
+}' "$input_file" | sort -k10,10 > "$output_file"
+

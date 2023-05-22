@@ -1,0 +1,9 @@
+syntax = "proto3";
+message SparseVector{
+    message vec{
+        repeated uint32 data = 1;
+        repeated uint32 indices = 2;
+        uint32 size = 3;
+    }
+    map<string, vec> chromosomes = 1;
+}

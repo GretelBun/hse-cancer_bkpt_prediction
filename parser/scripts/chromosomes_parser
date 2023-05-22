@@ -1,0 +1,55 @@
+#!/usr/bin/python3
+import urllib.request
+import os
+
+url = "https://hgdownload.soe.ucsc.edu/goldenPath/hg38/bigZips/hg38.chrom.sizes"
+filename = "hg38.chrom.sizes"
+
+urllib.request.urlretrieve(url, filename)
+chrom_sizes_file = "hg38.chrom.sizes"
+
+key_set = {
+    "chr1",
+    "chr2",
+    "chr3",
+    "chr4",
+    "chr5",
+    "chr6",
+    "chr7",
+    "chr8",
+    "chr9",
+    "chr10",
+    "chr11",
+    "chr12",
+    "chr13",
+    "chr14",
+    "chr15",
+    "chr16",
+    "chr17",
+    "chr18",
+    "chr19",
+    "chr20",
+    "chr21",
+    "chr22",
+    "chr23",
+    "chrX",
+    "chrY",
+    "chrM",
+}
+
+def get_chrom_sizes():
+    chrom_sizes = {}
+    with open(chrom_sizes_file) as f:
+        for line in f:
+            name, size = line.strip().split("\t")
+            chrom_sizes[name] = int(size)
+    return chrom_sizes
+
+
+chr_size = get_chrom_sizes()
+
+for key, value in chr_size.items():
+    if key in key_set:
+        print(f"""{{Chr::{key}, {value}}},""")
+
+os.remove(filename)
